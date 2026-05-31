@@ -1,0 +1,95 @@
+{
+  "company_name": "CV. Bima Laras Khatulistiwa",
+  "product": "Minyak Goreng 'Minyak Kita'",
+  "vehicle_capacity": 200,
+  "depot": {
+    "id": 0,
+    "name": "Gudang CV. Bima Laras",
+    "address": "Jl. Asem Jaya 5 No.46, Tembok Dukuh, Bubutan, Surabaya",
+    "lat": -7.2369,
+    "lng": 112.7335,
+    "demand": 0
+  },
+  "customers": [
+    {
+      "id": 1,
+      "name": "Toko Maju Jaya",
+      "address": "Jl. Rungkut Asri No. 15, Surabaya",
+      "lat": -7.3214,
+      "lng": 112.7753,
+      "demand": 45
+    },
+    {
+      "id": 2,
+      "name": "Swalayan Mulya",
+      "address": "Jl. Wonokromo No. 88, Surabaya",
+      "lat": -7.2958,
+      "lng": 112.7347,
+      "demand": 60
+    },
+    {
+      "id": 3,
+      "name": "Agen Berkah",
+      "address": "Jl. Gubeng No. 42, Surabaya",
+      "lat": -7.2714,
+      "lng": 112.7510,
+      "demand": 35
+    },
+    {
+      "id": 4,
+      "name": "Toko Laris",
+      "address": "Jl. Sukolilo No. 7, Surabaya",
+      "lat": -7.2932,
+      "lng": 112.7871,
+      "demand": 50
+    },
+    {
+      "id": 5,
+      "name": "Swalayan Indah",
+      "address": "Jl. Dukuh Pakis No. 23, Surabaya",
+      "lat": -7.2836,
+      "lng": 112.7125,
+      "demand": 40
+    },
+    {
+      "id": 6,
+      "name": "Agen Sejahtera",
+      "address": "Jl. Tenggilis No. 56, Surabaya",
+      "lat": -7.3076,
+      "lng": 112.7640,
+      "demand": 55
+    },
+    {
+      "id": 7,
+      "name": "Toko Barokah",
+      "address": "Jl. Gunung Anyar No. 34, Surabaya",
+      "lat": -7.3339,
+      "lng": 112.7936,
+      "demand": 30
+    },
+    {
+      "id": 8,
+      "name": "Swalayan Makmur",
+      "address": "Jl. Sidoarjo No. 12, Sidoarjo",
+      "lat": -7.4495,
+      "lng": 112.7183,
+      "demand": 48
+    },
+    {
+      "id": 9,
+      "name": "Agen Sukses",
+      "address": "Jl. Waru No. 9, Sidoarjo",
+      "lat": -7.3502,
+      "lng": 112.7755,
+      "demand": 42
+    },
+    {
+      "id": 10,
+      "name": "Toga Sakinah",
+      "address": "Jl. Buduran No. 21, Sidoarjo",
+      "lat": -7.4249,
+      "lng": 112.7266,
+      "demand": 38
+    }
+  ]
+}

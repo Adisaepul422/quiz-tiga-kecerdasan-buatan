@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Optimasi Logistik | CVRP</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚚 Simulasi Optimasi Logistik</h1>
+            <p>Capacitated Vehicle Routing Problem (CVRP) | CV. Bima Laras Khatulistiwa - Minyak Kita</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>⚙️ Konfigurasi Algoritma</h2>
+                
+                <div class="algorithm-selector">
+                    <button class="algo-btn active" data-algo="hc">⛰️ Hill Climbing</button>
+                    <button class="algo-btn" data-algo="sa">🔥 Simulated Annealing</button>
+                    <button class="algo-btn" data-algo="ga">🧬 Genetic Algorithm</button>
+                </div>
+
+                <!-- Hill Climbing Parameters -->
+                <div id="hc-params" class="params-panel active">
+                    <h3>Parameter Hill Climbing</h3>
+                    <div class="param-group">
+                        <label>Maksimal Iterasi:</label>
+                        <input type="number" id="hc-iterations" value="2000" min="500" max="5000">
+                    </div>
+                    <div class="param-group">
+                        <label>Varian:</label>
+                        <select id="hc-variant">
+                            <option value="simple">Simple Hill Climbing</option>
+                            <option value="steepest">Steepest-Ascent HC</option>
+                            <option value="stochastic">Stochastic HC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Simulated Annealing Parameters -->
+                <div id="sa-params" class="params-panel">
+                    <h3>Parameter Simulated Annealing</h3>
+                    <div class="param-group">
+                        <label>Suhu Awal (T₀):</label>
+                        <input type="number" id="sa-init-temp" value="1000" step="100">
+                    </div>
+                    <div class="param-group">
+                        <label>Cooling Rate (α):</label>
+                        <input type="number" id="sa-cooling-rate" value="0.995" step="0.001" min="0.9" max="0.999">
+                    </div>
+                    <div class="param-group">
+                        <label>Suhu Minimal:</label>
+                        <input type="number" id="sa-min-temp" value="0.01" step="0.01">
+                    </div>
+                </div>
+
+                <!-- Genetic Algorithm Parameters -->
+                <div id="ga-params" class="params-panel">
+                    <h3>Parameter Genetic Algorithm</h3>
+                    <div class="param-group">
+                        <label>Populasi:</label>
+                        <input type="number" id="ga-pop-size" value="80" min="20" max="200">
+                    </div>
+                    <div class="param-group">
+                        <label>Generasi:</label>
+                        <input type="number" id="ga-generations" value="200" min="50" max="500">
+                    </div>
+                    <div class="param-group">
+                        <label>Crossover Rate:</label>
+                        <input type="number" id="ga-crossover" value="0.85" step="0.05" min="0.6" max="0.95">
+                    </div>
+                    <div class="param-group">
+                        <label>Mutation Rate:</label>
+                        <input type="number" id="ga-mutation" value="0.03" step="0.01" min="0.01" max="0.1">
+                    </div>
+                </div>
+
+                <button id="solve-btn" class="solve-button">▶️ Mulai Optimasi</button>
+                <button id="compare-btn" class="compare-button">📊 Bandingkan Semua Algoritma</button>
+            </div>
+
+            <!-- Visualization Panel -->
+            <div class="visualization-panel">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3>📍 Kapasitas Kendaraan</h3>
+                        <div id="capacity-display" class="value-display">200 box</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>🏪 Jumlah Pelanggan</h3>
+                        <div id="customers-display" class="value-display">10</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>📦 Total Permintaan</h3>
+                        <div id="total-demand-display" class="value-display">- box</div>
+                    </div>
+                </div>
+
+                <div class="result-cards">
+                    <div class="result-card">
+                        <h3>🚚 Rute Optimal</h3>
+                        <div id="routes-display" class="routes-display">-</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>📏 Total Jarak</h3>
+                        <div id="distance-display" class="distance-display">- km</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>⏱️ Waktu Eksekusi</h3>
+                        <div id="time-display" class="time-display">- detik</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="convergence-chart"></canvas>
+                </div>
+
+                <div id="temperature-chart-container" class="chart-container" style="display: none;">
+                    <canvas id="temperature-chart"></canvas>
+                </div>
+
+                <div class="status-container">
+                    <div id="status" class="status">✅ Siap melakukan optimasi...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
