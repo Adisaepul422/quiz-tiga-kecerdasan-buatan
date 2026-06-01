@@ -3,4 +3,4 @@
 
 [deploy]
   startCommand = "cd backend && python app.py"
-  healthcheckPath = "/api/info"
+  healthcheckPath = "/health"

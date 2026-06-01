@@ -2,39 +2,81 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import json
 import os
+import sys
 from hill_climbing import HillClimbingSolver
 from simulated_annealing import SimulatedAnnealingSolver
 from genetic_algorithm import GeneticAlgorithmSolver
 from utils import load_cvrp_data
 
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
+# Inisialisasi Flask
+app = Flask(__name__)
 CORS(app)
 
-# Load data
-DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'customers_cvrp.json')
-cvrp_data = load_cvrp_data(DATA_PATH)
+# ========== KONFIGURASI PATH ==========
+# Dapatkan direktori backend
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+# Root direktori (simulasi-optimasi-logistik)
+ROOT_DIR = os.path.dirname(BACKEND_DIR)
+# Path ke data
+DATA_PATH = os.path.join(ROOT_DIR, 'data', 'customers_cvrp.json')
+# Path ke frontend
+FRONTEND_DIR = os.path.join(ROOT_DIR, 'frontend')
+
+print(f"Backend dir: {BACKEND_DIR}")
+print(f"Root dir: {ROOT_DIR}")
+print(f"Data path: {DATA_PATH}")
+print(f"Frontend dir: {FRONTEND_DIR}")
+
+# Load data CVRP
+try:
+    cvrp_data = load_cvrp_data(DATA_PATH)
+    print(f"Data loaded successfully. Customers: {cvrp_data['num_customers']}")
+except Exception as e:
+    print(f"Error loading data: {e}")
+    cvrp_data = None
 
 # ========== SERVING FRONTEND ==========
 @app.route('/')
 def serve_index():
     """Serve the main HTML file"""
-    return send_from_directory('../frontend', 'index.html')
+    try:
+        return send_from_directory(FRONTEND_DIR, 'index.html')
+    except Exception as e:
+        print(f"Error serving index.html: {e}")
+        return f"Error: {e}", 500
 
 @app.route('/style.css')
 def serve_css():
     """Serve CSS file"""
-    return send_from_directory('../frontend', 'style.css')
+    try:
+        return send_from_directory(FRONTEND_DIR, 'style.css')
+    except Exception as e:
+        print(f"Error serving style.css: {e}")
+        return f"Error: {e}", 500
 
 @app.route('/app.js')
 def serve_js():
     """Serve JavaScript file"""
-    return send_from_directory('../frontend', 'app.js')
+    try:
+        return send_from_directory(FRONTEND_DIR, 'app.js')
+    except Exception as e:
+        print(f"Error serving app.js: {e}")
+        return f"Error: {e}", 500
+
+# ========== HEALTH CHECK ==========
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Railway"""
+    return jsonify({'status': 'ok', 'data_loaded': cvrp_data is not None})
 
 # ========== API ENDPOINTS ==========
 @app.route('/api/info', methods=['GET'])
 def get_info():
     """Get problem information"""
+    if cvrp_data is None:
+        return jsonify({'success': False, 'error': 'Data not loaded'}), 500
     return jsonify({
+        'success': True,
         'company_name': cvrp_data['company_name'],
         'product': cvrp_data['product'],
         'vehicle_capacity': cvrp_data['vehicle_capacity'],
@@ -46,6 +88,8 @@ def get_info():
 @app.route('/api/solve/hill-climbing', methods=['POST'])
 def solve_hill_climbing():
     """Solve CVRP using Hill Climbing"""
+    if cvrp_data is None:
+        return jsonify({'success': False, 'error': 'Data not loaded'}), 500
     try:
         data = request.json
         max_iterations = data.get('max_iterations', 2000)
@@ -61,6 +105,8 @@ def solve_hill_climbing():
 @app.route('/api/solve/simulated-annealing', methods=['POST'])
 def solve_simulated_annealing():
     """Solve CVRP using Simulated Annealing"""
+    if cvrp_data is None:
+        return jsonify({'success': False, 'error': 'Data not loaded'}), 500
     try:
         data = request.json
         initial_temp = data.get('initial_temp', 1000.0)
@@ -78,6 +124,8 @@ def solve_simulated_annealing():
 @app.route('/api/solve/genetic-algorithm', methods=['POST'])
 def solve_genetic_algorithm():
     """Solve CVRP using Genetic Algorithm"""
+    if cvrp_data is None:
+        return jsonify({'success': False, 'error': 'Data not loaded'}), 500
     try:
         data = request.json
         population_size = data.get('population_size', 80)
@@ -97,6 +145,8 @@ def solve_genetic_algorithm():
 @app.route('/api/compare', methods=['POST'])
 def compare_algorithms():
     """Compare all three algorithms"""
+    if cvrp_data is None:
+        return jsonify({'success': False, 'error': 'Data not loaded'}), 500
     try:
         results = {}
         
@@ -135,6 +185,5 @@ def compare_algorithms():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get('PORT', 8080))
     app.run(debug=False, host='0.0.0.0', port=port)

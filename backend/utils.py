@@ -24,8 +24,21 @@ def haversine_distance(lat1, lng1, lat2, lng2):
 
 def load_cvrp_data(filepath):
     """Load CVRP data from JSON file"""
-    with open(filepath, 'r') as f:
+    import json
+    import os
+    
+    # Jika file tidak ditemukan, coba cari di lokasi alternatif
+    if not os.path.exists(filepath):
+        # Coba di root/data/
+        alt_path = os.path.join(os.path.dirname(os.path.dirname(filepath)), 'data', 'customers_cvrp.json')
+        if os.path.exists(alt_path):
+            filepath = alt_path
+        else:
+            raise FileNotFoundError(f"Data file not found at {filepath} or {alt_path}")
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
+    
     
     # Build distance matrix using Haversine formula
     all_locations = [data['depot']] + data['customers']
