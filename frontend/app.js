@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = '';
+const API_BASE_URL = '/api';
 
 // Global variables
 let convergenceChart = null;
