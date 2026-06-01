@@ -1,0 +1,8 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "python",
+  "deploy": {
+    "startCommand": "cd backend && python app.py",
+    "paths": ["/usr/local/bin"]
+  }
+}
